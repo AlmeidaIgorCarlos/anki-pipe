@@ -1,0 +1,19 @@
+{
+  "name": "ankipipe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlmeidaIgorCarlos/AnkiPIPE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlmeidaIgorCarlos/AnkiPIPE/issues"
+  },
+  "homepage": "https://github.com/AlmeidaIgorCarlos/AnkiPIPE#readme"
+}
