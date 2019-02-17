@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/AlmeidaIgorCarlos/AnkiPIPE/issues"
   },
-  "homepage": "https://github.com/AlmeidaIgorCarlos/AnkiPIPE#readme"
+  "homepage": "https://github.com/AlmeidaIgorCarlos/AnkiPIPE#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "express": "^4.16.4",
+    "mocha": "^5.2.0"
+  }
 }
