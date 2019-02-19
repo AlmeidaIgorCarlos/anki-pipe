@@ -13,7 +13,7 @@ var options = {
     headers: headers
 }
 
-exports.dicionario = function (palavra) {
+exports.dicionario =  (palavra) => new Promise((resolve) => {
     options.url += palavra;
 
     var pronunciations = [];
@@ -103,12 +103,11 @@ exports.dicionario = function (palavra) {
         // console.log('-----------');
 
         // console.log('--'+retorno.definitions);
-    
-        let retorno = {
+        resolve({
             pronunciations: pronunciations,
             definitions: definitions,
             examples: examples
-        }
-        return retorno;
+        })
+
     });
-}
+});

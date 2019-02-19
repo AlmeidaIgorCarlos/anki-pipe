@@ -20,6 +20,6 @@ listaFrasesConteudo.forEach((data, number, err) => {
 
 var dic = require('./Servicos/dicionario');
 
-let paralavra = dic.dicionario('hello').then(element=>{
+dic.dicionario('hello').then(element => {
     console.log(element);
 });
