@@ -13,8 +13,8 @@ var options = {
     headers: headers
 }
 
-exports.consultar =  (palavra) => new Promise((resolve) => {
-    options.url += palavra;
+exports.consultar = (palavra) => new Promise((resolve) => {
+    options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
 
     var pronunciations = [];
     var definitions = [];
@@ -35,7 +35,7 @@ exports.consultar =  (palavra) => new Promise((resolve) => {
             lexicalEntries.push(data.lexicalEntries);
         });
 
-        
+
         tempArr = [];
 
         lexicalEntries.forEach(objetosArray);

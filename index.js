@@ -6,6 +6,8 @@ const listaFrasesConteudo = listaFrases.retornarFrases(configuracao.ListaPath);
 
 const dicionario = require('./Servicos/dicionario');
 
+const ankiConnect = require('./Servicos/ankiconnect');
+
 let RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
 
 let listaPalavras = [];
@@ -13,6 +15,7 @@ let listaPalavras = [];
 listaFrasesConteudo.forEach((data, number, err) => {
     var palavra = RegExp.exec(data);
     if (palavra != null) {
+
         dicionario.consultar(palavra[0]).then(element => {
             let card = {
                 frase: data,
@@ -21,11 +24,14 @@ listaFrasesConteudo.forEach((data, number, err) => {
                 exemplos: element.examples
             }
 
-            listaPalavras.push(card);
+            try {
+                ankiConnect.adicionar(card);    
+            } catch (error) {
+                console.log('---'+error);
+            }
+            
         });
     }
 });
 
-//////
-
-
+console.log('rrr');
