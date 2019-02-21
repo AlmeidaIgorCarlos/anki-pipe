@@ -1,7 +1,7 @@
-exports.configuracao = require('./../Arquivos/configuracao');
-exports.request = require('request')
+const configuracao = require('./../Arquivos/configuracao');
+const request = require('request')
 
-module.exports.adicionar = (card) => {
+exports.adicionar = (card) => {
     let backPronuncia = "";
     let backDefinicao = "DEFINITIONS <br/>";
     let backExemplo = "EXAMPLES <br/>";
