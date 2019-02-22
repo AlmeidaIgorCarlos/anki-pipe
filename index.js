@@ -9,25 +9,34 @@ const listaFrasesConteudo = listaFrases.retornarFrases(configuracao.ListaPath);
 const RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
 let listaPalavras = [];
 
-listaFrasesConteudo.forEach((data, number, err) => {
-    var palavra = RegExp.exec(data);
-
-    if (palavra != null) {
-        dicionario.consultar(palavra[0]).then(element => {
-            let card = {
-                frase: data,
-                pronuncia: element.pronunciations,
-                definicao: element.definitions,
-                exemplos: element.examples
-            }
-
-            ankiConnect.adicionar(card).then((element => {
-                console.log("Card adicionado com sucesso");
-            })).catch((element) => {
-                console.log("Erro ao adicionar o card");
-            });
-        }).catch((element) => {
-            console.log(`erro ao consultar palavra: '${element.palavraDicionario}' no dicionario`);
-        })
-    }
+listaFrasesConteudo.forEach((data) => {
+    let palavra = RegExp.exec(data);
+    listaPalavras.push(palavra[0]);
 });
+
+
+
+const cardsPromises = dicionario.consultar(listaPalavras);
+console.log(cardsPromises);
+// listaFrasesConteudo.forEach((data, number, err) => {
+//     var palavra = RegExp.exec(data);
+
+//     if (palavra != null) {
+//         dicionario.consultar(palavra[0]).then(element => {
+//             let card = {
+//                 frase: data,
+//                 pronuncia: element.pronunciations,
+//                 definicao: element.definitions,
+//                 exemplos: element.examples
+//             }
+
+//             ankiConnect.adicionar(card).then((element => {
+//                 console.log("Card adicionado com sucesso");
+//             })).catch((element) => {
+//                 console.log("Erro ao adicionar o card");
+//             });
+//         }).catch((element) => {
+//             console.log(`erro ao consultar palavra: '${element.palavraDicionario}' no dicionario`);
+//         })
+//     }
+// });

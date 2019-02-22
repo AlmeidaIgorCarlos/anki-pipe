@@ -1,6 +1,10 @@
 const request = require('request');
 const configuracao = require('./../Arquivos/configuracao');
 
+let pronunciations = [];
+let definitions = [];
+let examples = [];
+
 const headers = {
     'Content-Type': 'application/json',
     'app_key': configuracao.OxfordAuthentication.app_key,
@@ -13,19 +17,15 @@ let options = {
     headers: headers
 }
 
-module.exports = {
-    consultar: (palavra) => new Promise((resolve, reject) => {
-        options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
+function pesquisarPalavras(palavra) {
+    options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
 
-        let pronunciations = [];
-        let definitions = [];
-        let examples = [];
-
+    return new Promise((resolve, reject) => {
         request(options, (error, res, body) => {
-            if (res.statusCode == 404) 
-            return reject({
-                palavraDicionario: palavra
-            });
+            if (res.statusCode == 404)
+                return resolve({
+                    palavraDicionario: `Não foi possível encontrar a palavra: ${palavra}`
+                });
 
             let json = JSON.parse(body);
             let tempArr = [];
@@ -99,5 +99,19 @@ module.exports = {
             })
 
         });
-    })
+    });
+}
+
+module.exports = {
+    consultar: async (palavras) => {
+        let cardsPromise = [];
+        try {
+            palavras.forEach(function (data) {
+                cardsPromise.push(pesquisarPalavras(data));
+            });
+            return cardsPromise;
+        } catch (error) {
+            cardsPromise.push(error);
+        }
+    }
 }
