@@ -22,7 +22,10 @@ module.exports = {
         let examples = [];
 
         request(options, (error, res, body) => {
-            if (res.statusCode == 404) reject(false);
+            if (res.statusCode == 404) 
+            return reject({
+                palavraDicionario: palavra
+            });
 
             let json = JSON.parse(body);
             let tempArr = [];
@@ -89,7 +92,7 @@ module.exports = {
 
             examples = tempArr[0];
 
-            resolve({
+            return resolve({
                 pronunciations: pronunciations,
                 definitions: definitions,
                 examples: examples

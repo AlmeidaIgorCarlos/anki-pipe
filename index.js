@@ -27,7 +27,7 @@ listaFrasesConteudo.forEach((data, number, err) => {
                 console.log("Erro ao adicionar o card");
             });
         }).catch((element) => {
-            console.log('erro ao consultar palavra no dicionario');
+            console.log(`erro ao consultar palavra: '${element.palavraDicionario}' no dicionario`);
         })
     }
 });
