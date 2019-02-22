@@ -51,5 +51,19 @@ module.exports = {
             if(err) reject(false);
             else resolve(true)
         });
+    }),
+    consultarCards:()=>new Promise((resolve, reject)=>{
+        let postBody = {
+            "action": "findCards",
+            "version": 6,
+            "params": {
+                "query": `deck:${configuracao.ankiConnect.deck}`
+            }
+        }
+        request.post(configuracao.ankiConnect.path, (err, res, body)=>{
+            if(err) reject({erro: new Error("não foi possivel consultar os cards")})
+            const retorno = JSON.parse(body);
+            resolve({resultado: retorno.result})
+        });
     })
 }
