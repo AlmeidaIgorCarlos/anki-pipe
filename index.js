@@ -20,8 +20,14 @@ listaFrasesConteudo.forEach((data, number, err) => {
                 definicao: element.definitions,
                 exemplos: element.examples
             }
-            
-            ankiConnect.adicionar(card);
-        });
+
+            ankiConnect.adicionar(card).then((element => {
+                console.log("Card adicionado com sucesso");
+            })).catch((element) => {
+                console.log("Erro ao adicionar o card");
+            });
+        }).catch((element) => {
+            console.log('erro ao consultar palavra no dicionario');
+        })
     }
 });
