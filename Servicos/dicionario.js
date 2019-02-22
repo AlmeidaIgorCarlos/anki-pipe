@@ -17,15 +17,13 @@ let options = {
     headers: headers
 }
 
-function pesquisarPalavras(palavra) {
+function pesquisarPalavras(palavra, frasePalavra) {
     options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
 
     return new Promise((resolve, reject) => {
         request(options, (error, res, body) => {
             if (res.statusCode == 404)
-                return resolve({
-                    palavraDicionario: `Não foi possível encontrar a palavra: ${palavra}`
-                });
+                return resolve(false);
 
             let json = JSON.parse(body);
             let tempArr = [];
@@ -79,10 +77,11 @@ function pesquisarPalavras(palavra) {
 
             definitions.forEach(objetosArray);
 
-
-            tempArr[0].forEach((data, index) => {
-                examples.push(data.examples);
-            })
+            tempArr.forEach((data, index) => {
+                data.forEach((dataInterno) => {
+                    examples.push(dataInterno.examples);
+                });
+            });
 
             tempArr = [];
 
@@ -95,7 +94,8 @@ function pesquisarPalavras(palavra) {
             return resolve({
                 pronunciations: pronunciations,
                 definitions: definitions,
-                examples: examples
+                examples: examples,
+                frase: frasePalavra
             })
 
         });
@@ -103,11 +103,13 @@ function pesquisarPalavras(palavra) {
 }
 
 module.exports = {
-    consultar: async (palavras) => {
+    consultar: (palavras) => {
         let cardsPromise = [];
         try {
             palavras.forEach(function (data) {
-                cardsPromise.push(pesquisarPalavras(data));
+                let cartao = pesquisarPalavras(data.palavra, data.frase);
+
+                cardsPromise.push(cartao);
             });
             return cardsPromise;
         } catch (error) {

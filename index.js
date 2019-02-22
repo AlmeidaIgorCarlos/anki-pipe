@@ -11,32 +11,23 @@ let listaPalavras = [];
 
 listaFrasesConteudo.forEach((data) => {
     let palavra = RegExp.exec(data);
-    listaPalavras.push(palavra[0]);
+    listaPalavras.push({palavra:palavra[0], frase:data});
 });
 
+const cartoesPromise = dicionario.consultar(listaPalavras);
 
+async function fluxo(cartoesPromise) {
+    try {
+        let cartoesAnki = await Promise.all(cartoesPromise);
 
-const cardsPromises = dicionario.consultar(listaPalavras);
-console.log(cardsPromises);
-// listaFrasesConteudo.forEach((data, number, err) => {
-//     var palavra = RegExp.exec(data);
+        cartoesAnki.forEach((data, index) => {
+            if (data === false) cartoesAnki.splice(index, 1);
+        });
 
-//     if (palavra != null) {
-//         dicionario.consultar(palavra[0]).then(element => {
-//             let card = {
-//                 frase: data,
-//                 pronuncia: element.pronunciations,
-//                 definicao: element.definitions,
-//                 exemplos: element.examples
-//             }
+        await ankiConnect.adicionar(cartoesAnki);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-//             ankiConnect.adicionar(card).then((element => {
-//                 console.log("Card adicionado com sucesso");
-//             })).catch((element) => {
-//                 console.log("Erro ao adicionar o card");
-//             });
-//         }).catch((element) => {
-//             console.log(`erro ao consultar palavra: '${element.palavraDicionario}' no dicionario`);
-//         })
-//     }
-// });
+fluxo(cartoesPromise);

@@ -1,42 +1,52 @@
 const configuracao = require('./../Arquivos/configuracao');
 const request = require('request')
 
-module.exports = {
-    adicionar: (card) => new Promise((resolve, reject) => {
+function montarCartoes(cartoes) {
+    let cartoesTemp = [];
+
+    cartoes.forEach((cartao) => {
         let backPronuncia = "";
         let backDefinicao = "DEFINITIONS <br/>";
         let backExemplo = "EXAMPLES <br/>";
 
-        card.pronuncia.forEach((data, index) => {
+        cartao.pronunciations.forEach((data, index) => {
             backPronuncia += `${data.phoneticSpelling} <br/>`
         });
 
-        card.definicao.forEach((data, index) => {
+        cartao.definitions.forEach((data, index) => {
             backDefinicao += `${index + 1} - ${data.definitions} <br/>`
         });
 
-        card.exemplos.forEach((data, index) => {
+        cartao.examples.forEach((data, index) => {
             backExemplo += `${index + 1} - ${data.text}<br/>`
         });
 
+        cartoesTemp.push({
+            deckName: configuracao.AnkiConnect.deck,
+            modelName: "Basic",
+            fields: {
+                Front: cartao.frase,
+                Back: `${backPronuncia}</br></br>${backDefinicao}</br></br><sub>${backExemplo}</sub>`
+            },
+            options: {
+                allowDuplicate: true
+            },
+            tags: [
+            ]
+        });
+
+    });
+    return cartoesTemp;
+}
+
+module.exports = {
+    adicionar: (cartoes) => new Promise((resolve, reject) => {
         request.post({
             body: {
-                action: "addNote",
+                action: "addNotes",
                 version: 6,
                 params: {
-                    note: {
-                        deckName: configuracao.AnkiConnect.deck,
-                        modelName: "Basic",
-                        fields: {
-                            Front: card.frase,
-                            Back: `${backPronuncia}</br></br>${backDefinicao}</br></br><sub>${backExemplo}</sub>`
-                        },
-                        options: {
-                            allowDuplicate: true
-                        },
-                        tags: [
-                        ]
-                    }
+                    notes: montarCartoes(cartoes)
                 }
             },
             url: configuracao.AnkiConnect.path,
@@ -48,11 +58,11 @@ module.exports = {
             },
             json: true
         }, (err, res, body) => {
-            if(err) reject(false);
+            if (err) reject(false);
             else resolve(true)
         });
     }),
-    consultarCards:()=>new Promise((resolve, reject)=>{
+    consultarCards: () => new Promise((resolve, reject) => {
         let postBody = {
             "action": "findCards",
             "version": 6,
@@ -60,10 +70,10 @@ module.exports = {
                 "query": `deck:${configuracao.ankiConnect.deck}`
             }
         }
-        request.post(configuracao.ankiConnect.path, (err, res, body)=>{
-            if(err) reject({erro: new Error("não foi possivel consultar os cards")})
+        request.post(configuracao.ankiConnect.path, (err, res, body) => {
+            if (err) reject({ erro: new Error("não foi possivel consultar os cards") })
             const retorno = JSON.parse(body);
-            resolve({resultado: retorno.result})
+            resolve({ resultado: retorno.result })
         });
     })
 }
