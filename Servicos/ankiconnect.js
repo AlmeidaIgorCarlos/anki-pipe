@@ -9,17 +9,20 @@ function montarCartoes(cartoes) {
         let backDefinicao = "DEFINITIONS <br/>";
         let backExemplo = "EXAMPLES <br/>";
 
-        cartao.pronunciations.forEach((data, index) => {
-            backPronuncia += `${data.phoneticSpelling} <br/>`
-        });
+        if (cartao.pronunciations != null)
+            cartao.pronunciations.forEach((data, index) => {
+                backPronuncia += `${data.phoneticSpelling} <br/>`
+            });
 
-        cartao.definitions.forEach((data, index) => {
-            backDefinicao += `${index + 1} - ${data.definitions} <br/>`
-        });
+        if (cartao.definitions != null)
+            cartao.definitions.forEach((data, index) => {
+                backDefinicao += `${index + 1} - ${data.definitions} <br/>`
+            });
 
-        cartao.examples.forEach((data, index) => {
-            backExemplo += `${index + 1} - ${data.text}<br/>`
-        });
+        if (cartao.examples != null)
+            cartao.examples.forEach((data, index) => {
+                backExemplo += `${index + 1} - ${data.text}<br/>`
+            });
 
         cartoesTemp.push({
             deckName: configuracao.AnkiConnect.deck,

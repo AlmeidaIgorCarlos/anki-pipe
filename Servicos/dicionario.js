@@ -1,10 +1,6 @@
 const request = require('request');
 const configuracao = require('./../Arquivos/configuracao');
 
-let pronunciations = [];
-let definitions = [];
-let examples = [];
-
 const headers = {
     'Content-Type': 'application/json',
     'app_key': configuracao.OxfordAuthentication.app_key,
@@ -19,6 +15,10 @@ let options = {
 
 function pesquisarPalavras(palavra, frasePalavra) {
     options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
+
+    let pronunciations = [];
+    let definitions = [];
+    let examples = [];
 
     return new Promise((resolve, reject) => {
         request(options, (error, res, body) => {
@@ -77,10 +77,8 @@ function pesquisarPalavras(palavra, frasePalavra) {
 
             definitions.forEach(objetosArray);
 
-            tempArr.forEach((data, index) => {
-                data.forEach((dataInterno) => {
-                    examples.push(dataInterno.examples);
-                });
+            tempArr[0].forEach((data, index) => {
+                examples.push(data.examples);
             });
 
             tempArr = [];
