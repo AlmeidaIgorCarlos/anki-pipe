@@ -1,33 +1,38 @@
 const desserializador = require('./Servicos/desserializadorJSON');
 const listaFrases = require('./Servicos/listaFrases');
-const dicionario = require('./Servicos/dicionario');
+const dicionarioGlosbe = require('./Servicos/dicionarios/globe');
+const dicionarioOxford = require('./Servicos/dicionarios/oxford');
 const ankiConnect = require('./Servicos/ankiconnect');
 
 const configuracao = desserializador.recuperarArquivoConfiguracao();
 const listaFrasesConteudo = listaFrases.retornarFrases(configuracao.ListaPath);
 
 const RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
-let listaPalavras = [];
+let cartoes = [];
 
-listaFrasesConteudo.forEach((data) => {
-    let palavra = RegExp.exec(data);
-    listaPalavras.push({palavra:palavra[0], frase:data});
-});
-
-const cartoesPromise = dicionario.consultar(listaPalavras);
-
-async function fluxo(cartoesPromise) {
+function fluxo() {
     try {
-        let cartoesAnki = await Promise.all(cartoesPromise);
+        listaFrasesConteudo.forEach(async (data) => {
+            let palavra = RegExp.exec(data);
+            let valores = [];
 
-        cartoesAnki.forEach((data, index) => {
-            if (data === false) cartoesAnki.splice(index, 1);
+            valores = await Promise.all([dicionarioOxford.consultarPronuncia(palavra[0]),
+            dicionarioGlosbe.consultarDefinicao(palavra[0]),
+            dicionarioGlosbe.consultarExemplo(palavra[0])]
+            );
+
+            let cartao = {
+                pronuncias: valores[0],
+                definicoes: valores[1],
+                exemplos: valores[2]
+            };
+            cartoes.push(cartao);
         });
 
-        await ankiConnect.adicionar(cartoesAnki);
+        ankiConnect.adicionar(cartoes);
     } catch (error) {
         console.log(error);
     }
 }
 
-fluxo(cartoesPromise);
+fluxo();
