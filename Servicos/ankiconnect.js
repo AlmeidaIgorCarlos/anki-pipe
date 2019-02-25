@@ -5,28 +5,13 @@ function montarCartoes(cartoes) {
     let cartoesTemp = [];
 
     cartoes.forEach((cartao) => {
-        let backPronuncia = "";
-        let backDefinicao = "DEFINITIONS <br/>";
-        let backExemplo = "EXAMPLES <br/>";
-
-        cartao.pronuncias.forEach((data, index) => {
-            backPronuncia += `${data} <br/>`
-        });
-
-        cartao.definicoes.forEach((data, index) => {
-            backDefinicao += `${index + 1} - ${data} <br/>`
-        });
-
-        cartao.exemplos.forEach((data, index) => {
-            backExemplo += `${index + 1} - ${data}<br/>`
-        });
 
         cartoesTemp.push({
             deckName: configuracao.AnkiConnect.deck,
             modelName: "Basic",
             fields: {
                 Front: cartao.frase,
-                Back: `${backPronuncia}</br></br>${backDefinicao}</br></br><sub>${backExemplo}</sub>`
+                Back: `${cartao.pronunciations}</br></br>${cartao.definitions}</br></br><sub>${cartao.examples}</sub>`
             },
             options: {
                 allowDuplicate: true

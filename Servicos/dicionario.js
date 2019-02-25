@@ -13,6 +13,12 @@ let options = {
     headers: headers
 }
 
+function flatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+}
+
 function pesquisarPalavras(palavra, frasePalavra) {
     options.url = configuracao.OxfordAuthentication.app_url + configuracao.OxfordAuthentication.entries_path + palavra;
 
@@ -20,81 +26,29 @@ function pesquisarPalavras(palavra, frasePalavra) {
     let definitions = [];
     let examples = [];
 
-    return new Promise((resolve, reject) => {
-        request(options, (error, res, body) => {
-            if (res.statusCode == 404)
-                return resolve(false);
+    return new Promise((resolve, ) => {
+        request(options, (err, res, body) => {
+            if (err | res.statusCode == 404)
+                resolve(false);
+            else {
 
-            let json = JSON.parse(body);
-            let tempArr = [];
+                let json = JSON.parse(body);
+                try {
+                    pronunciations = json.results[0].lexicalEntries.map(lexicalEntry => lexicalEntry.pronunciations[0].phoneticSpelling);
+                    definitions = flatten(json.results[0].lexicalEntries.map(lexicalEntry => lexicalEntry.entries.map(entry => entry.senses.map(sense => `${sense.definitions}<br/>`))));
+                    examples = flatten(json.results[0].lexicalEntries.map(lexicalEntry => lexicalEntry.entries.map(entry => entry.senses.map(sense => sense.examples.map(example => `${example.text}<br/>`)))));
 
-            let objetosArray = function (data, index) {
-                tempArr.push(data);
+                } catch (error) {
+
+                } finally {
+                    resolve({
+                        pronunciations: pronunciations,
+                        definitions: definitions,
+                        examples: examples,
+                        frase: frasePalavra
+                    })
+                }
             }
-
-            json.results.forEach(objetosArray);
-            let lexicalEntries = [];
-
-            tempArr.forEach((data, index) => {
-                lexicalEntries.push(data.lexicalEntries);
-            });
-
-
-            tempArr = [];
-
-            lexicalEntries.forEach(objetosArray);
-
-            tempArr[0].forEach((data, index) => {
-                pronunciations.push(data.pronunciations);
-            });
-
-            tempArr = [];
-
-            pronunciations = pronunciations[0];
-
-            let entries = [];
-
-            lexicalEntries.forEach((data, index) => {
-                entries.push(data);
-            });
-            tempArr = [];
-
-            let senses = [];
-
-            entries[0].forEach((data, index) => {
-                senses.push(data.entries);
-            });
-            tempArr = [];
-
-            senses.forEach(objetosArray);
-
-
-            tempArr[0].forEach((data, index) => {
-                definitions.push(data.senses);
-            });
-
-            tempArr = [];
-
-            definitions.forEach(objetosArray);
-
-            tempArr[0].forEach((data, index) => {
-                examples.push(data.examples);
-            });
-
-            tempArr = [];
-
-            definitions = definitions[0];
-
-            examples.forEach(objetosArray);
-
-            examples = tempArr[0];
-
-            return resolve({
-                pronunciations: pronunciations,
-                definitions: definitions,
-                examples: examples,
-                frase: frasePalavra
-            })
 
         });
     });

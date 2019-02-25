@@ -1,39 +1,33 @@
-const desserializador = require("./Servicos/desserializadorJSON");
-const listaFrases = require("./Servicos/listaFrases");
-const dicionarioGlosbe = require("./Servicos/dicionarios/globe");
-const dicionarioOxford = require("./Servicos/dicionarios/oxford");
-const ankiConnect = require("./Servicos/ankiconnect");
+const desserializador = require('./Servicos/desserializadorJSON');
+const listaFrases = require('./Servicos/listaFrases');
+const dicionario = require('./Servicos/dicionario');
+const ankiConnect = require('./Servicos/ankiconnect');
 
-const listaFrasesConteudo = listaFrases.retornarFrases("./Arquivos/lista.txt");
+const configuracao = desserializador.recuperarArquivoConfiguracao();
+const listaFrasesConteudo = listaFrases.retornarFrases(configuracao.ListaPath);
 
-const rgx = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
+const RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
+let listaPalavras = [];
 
-const retornarCartao = palavra =>
-  new Promise(async resolve => {
-    const pronuncia = await dicionarioOxford.consultarPronuncia(palavra);
-    const definicao = await dicionarioGlosbe.consultarDefinicao(palavra);
-    const exemplo = await dicionarioGlosbe.consultarExemplo(palavra);
-    resolve([pronuncia, definicao, exemplo]);
-  });
-
-const pegarCartoes = () =>
-  new Promise(async resolve => {
-    //converte .txt em array de palavras => [!palavra!, ...]
-    const palavras = listaFrasesConteudo.map(frase => rgx.exec(frase)[0]);
-
-    const fullCard = palavras.map(async palavra => {
-      const [pronuncia, definicao, exemplo] = await retornarCartao(palavra);
-      return {
-        palavra,
-        pronuncia,
-        definicao,
-        exemplo
-      };
-    });
-    const r = await Promise.all(fullCard);
-    resolve(r);
-  });
-
-pegarCartoes().then(cartoes => {
-  console.log(cartoes.filter(cartao => cartao.palavra === "running"));
+listaFrasesConteudo.forEach((data) => {
+    let palavra = RegExp.exec(data);
+    listaPalavras.push({palavra:palavra[0], frase:data});
 });
+
+const cartoesPromise = dicionario.consultar(listaPalavras);
+
+async function fluxo(cartoesPromise) {
+    try {
+        let cartoesAnki = await Promise.all(cartoesPromise);
+
+        cartoesAnki.forEach((data, index) => {
+            if (data === false) cartoesAnki.splice(index, 1);
+        });
+
+        await ankiConnect.adicionar(cartoesAnki);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+fluxo(cartoesPromise);
