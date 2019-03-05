@@ -1,3 +1,3 @@
-const dataFile = require('./Servicos/dataFile')
-const webScraper = require('./Servicos/webScraper')
-const ankiConnect = require('./Servicos/ankiConnect')
+const dataFile = require('./services/dataFile')
+const webScraper = require('./services/webScraper')
+const ankiConnect = require('./services/ankiConnect')
