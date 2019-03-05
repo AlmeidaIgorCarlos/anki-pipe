@@ -1,17 +1,15 @@
-const configuracao = require('./../Arquivos/configuracao');
 const request = require('request')
 
-function montarCartoes(cartoes) {
-    let cartoesTemp = [];
+function setCards(cards) {
+    const tempCards = [];
 
-    cartoes.forEach((cartao) => {
-
-        cartoesTemp.push({
-            deckName: configuracao.AnkiConnect.deck,
+    cards.forEach((card) => {
+        tempCards.push({
+            deckName: 'English deck',
             modelName: "Basic",
             fields: {
-                Front: cartao.frase,
-                Back: `${cartao.pronunciations}</br></br>${cartao.definitions}</br></br><sub>${cartao.examples}</sub>`
+                Front: card.sentence,
+                Back: `${card.pronunciation}</br></br>${card.definition}</br></br><sub>${card.example}</sub>`
             },
             options: {
                 allowDuplicate: true
@@ -21,20 +19,20 @@ function montarCartoes(cartoes) {
         });
 
     });
-    return cartoesTemp;
+    return tempCards;
 }
 
 module.exports = {
-    adicionar: (cartoes) => new Promise((resolve, reject) => {
+    postAnkiCards: (cards) =>{
         request.post({
             body: {
                 action: "addNotes",
                 version: 6,
                 params: {
-                    notes: montarCartoes(cartoes)
+                    notes: setCards(cards)
                 }
             },
-            url: configuracao.AnkiConnect.path,
+            url: 'http://127.0.0.1:8765',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,23 +40,28 @@ module.exports = {
                 'Postman-Token': 'bb798423-2e03-4a1a-9463-f01ee6be8a06'
             },
             json: true
-        }, (err, res, body) => {
-            if (err) reject(false);
-            else resolve(true)
-        });
+        })
+    },
+    getAnkiCards: () => new Promise((resolve, reject) => {
+        request.post({
+            body:{
+                "action": "findCards",
+                "version": 6,
+                "params": {
+                    "query": 'deck:current'
+                }
+            },
+            url: 'http://127.0.0.1:8765',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Postman-Token': 'bb798423-2e03-4a1a-9463-f01ee6be8a06'
+            },
+            json: true
+        }, (err, res, body)=>{
+            if(err || res.statusCode != 200) reject("Anki's connection failed")
+            else resolve(JSON.stringify(body))
+        })
     }),
-    consultarCards: () => new Promise((resolve, reject) => {
-        let postBody = {
-            "action": "findCards",
-            "version": 6,
-            "params": {
-                "query": `deck:${configuracao.ankiConnect.deck}`
-            }
-        }
-        request.post(configuracao.ankiConnect.path, (err, res, body) => {
-            if (err) reject({ erro: new Error("não foi possivel consultar os cards") })
-            const retorno = JSON.parse(body);
-            resolve({ resultado: retorno.result })
-        });
-    })
+    count: (data) => JSON.parse(data).result.length  
 }
