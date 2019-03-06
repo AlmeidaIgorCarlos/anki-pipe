@@ -21,16 +21,19 @@ module.exports = function webScraping(word){
 
     this.getPronunciation = function($, callback){
         const wordPronunciation = $('.pron').text()
+        if(wordPronunciation == false) throw new Error('No pronunciation found')
         callback(wordPronunciation)
     }
 
     this.getDefinition = function($, callback){
         const wordDefinition = $('.hom>.sense>.def').text()
+        if(wordDefinition == false) throw new Error('No definition found')
         callback(wordDefinition)
     }
 
     this.getExample = function($, callback){
         const wordExample = $('.hom>.sense>.type-example>.quote').text()
+        if(wordExample == false) throw new Error('No example found')
         callback(wordExample)
     }
 }
