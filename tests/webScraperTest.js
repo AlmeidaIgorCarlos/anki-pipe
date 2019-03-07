@@ -1,11 +1,12 @@
-const assert = require('mocha')
+const assert = require('chai').assert
 const webScraper = require('./../services/webScraper')
 
-describe('webScraper', ()=>{
-    let body
+describe('webScraper', async()=>{
     const webScraperTest = new webScraper('run')
-    
-    webScraperTest.searchWord(webScraperTest).then(($)=>{
-        body = $
-    })
+    let body
+
+    it('test1', async()=>{
+        body = await webScraperTest.searchWord()
+        assert(body !== null)
+    }).timeout(0)
 })
