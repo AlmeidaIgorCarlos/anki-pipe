@@ -1,4 +1,14 @@
 const request = require('request')
+const requisition = {
+    url: 'http://127.0.0.1:8765',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Postman-Token': 'bb798423-2e03-4a1a-9463-f01ee6be8a06'
+    },
+    json: true
+}
 
 function setCards(cards) {
     const tempCards = [];
@@ -23,45 +33,33 @@ function setCards(cards) {
 }
 
 module.exports = {
-    postAnkiCards: (cards) =>{
-        request.post({
-            body: {
-                action: "addNotes",
-                version: 6,
-                params: {
-                    notes: setCards(cards)
-                }
+    postAnkiCards: (cards) => {
+        request.post(Object.assign({},
+            {
+                body: {
+                    action: "addNotes",
+                    version: 6,
+                    params: {
+                        notes: setCards(cards)
+                    }
+                },
             },
-            url: 'http://127.0.0.1:8765',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Postman-Token': 'bb798423-2e03-4a1a-9463-f01ee6be8a06'
-            },
-            json: true
-        })
+            requisition))
     },
     getAnkiCards: () => new Promise((resolve, reject) => {
-        request.post({
-            body:{
-                "action": "findCards",
-                "version": 6,
-                "params": {
-                    "query": 'deck:current'
-                }
-            },
-            url: 'http://127.0.0.1:8765',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Postman-Token': 'bb798423-2e03-4a1a-9463-f01ee6be8a06'
-            },
-            json: true
-        }, (err, res, body)=>{
-            if(err || res.statusCode != 200) reject("Anki's connection failed")
-            else resolve(JSON.stringify(body))
-        })
+        request.post(Object.assign({},
+            {
+                body: {
+                    "action": "findCards",
+                    "version": 6,
+                    "params": {
+                        "query": 'deck:current'
+                    }
+                },
+            }, requisition), (err, res, body) => {
+                if (err || res.statusCode != 200) reject("Anki's connection failed")
+                else resolve(JSON.stringify(body))
+            })
     }),
-    count: (data) => JSON.parse(data).result.length  
+    count: (data) => JSON.parse(data).result.length
 }
