@@ -1,16 +1,6 @@
 const assert = require('chai').assert
 const webScraper = require('./../services/webScraper')
 
-<<<<<<< HEAD
-describe('webScraper', async()=>{
-    const webScraperTest = new webScraper('run')
-    let body
-
-    it('test1', async()=>{
-        body = await webScraperTest.searchWord()
-        assert(body !== null)
-    }).timeout(0)
-=======
 describe('webScraper', () => {
     const webScraperTest = new webScraper('run')
 
@@ -103,5 +93,4 @@ describe('webScraper', () => {
         }
     }).timeout(0)
 
->>>>>>> bac385da8acec3d083a03166421a4a5ab2727fe8
 })
