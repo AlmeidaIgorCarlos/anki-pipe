@@ -193,15 +193,5 @@ describe("Log's Test", () => {
         }
     })
 
-    it("Finish log", async () => {
-        const log = new Log
-
-        log.start()
-        log.add("Word ETC was added correctly")
-        log.finish()
-        const result = await log.save('C:/Users/igorc/Documents/Projects/AnkiPIPE/files/log.txt')
-
-        assert(result === 'File saved correctly')
-    })
 
 })
