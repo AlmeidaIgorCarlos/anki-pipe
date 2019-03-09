@@ -1,0 +1,3 @@
+Beginning of the execution: [3:55:54 PM] 
+,Word ETC was added correctly 
+,Execution finish: [3:55:54 PM] 

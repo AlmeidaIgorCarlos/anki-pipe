@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha tests/webScraperTest",
+    "test": "mocha tests/unitTests",
     "start": "node app.js"
   },
   "repository": {
