@@ -1,5 +1,7 @@
 const assert = require('chai').assert
+
 const webScraper = require('./../services/webScraper')
+const Log = require('./../services/log')
 
 describe('webScraper', () => {
     const webScraperTest = new webScraper('run')
@@ -92,5 +94,114 @@ describe('webScraper', () => {
             assert(error.message === 'No example found')
         }
     }).timeout(0)
+
+})
+
+describe("Log's Test", () => {
+
+    it("beginning log", () => {
+        const log = new Log
+
+        log.start()
+        const logRows = log.getLog()
+
+        assert(logRows.length == 1)
+    })
+
+    it("Add log with no start", () => {
+        const log = new Log
+
+        try {
+            log.add("Word ETC was added correctly")
+        } catch (error) {
+            assert(error.message === "It's not possible to add a log in a non-initialized log")
+        }
+    })
+
+    it("Add log with start", () => {
+        const log = new Log
+
+        log.start()
+        log.add("Word ETC was added correctly")
+
+        const logRows = log.getLog()
+        assert(logRows.length === 2)
+    })
+
+    it("Finishing a log non-initialized", () => {
+        try {
+            const log = new Log
+
+            log.start()
+            log.finish()
+        } catch (error) {
+            assert(error.message === "It's not possible to finish a log that wasn't even initialized")
+        }
+
+    })
+
+    it("Finish log", () => {
+        const log = new Log
+
+        log.start()
+        log.add("Word ETC was added correctly")
+        log.finish()
+
+        const logRows = log.getLog()
+        assert(logRows.length === 3)
+    })
+
+    it("Save log with no finish", async () => {
+        try {
+            const log = new Log
+
+            log.start()
+            log.add("Word ETC was added correctly")
+            log.finish()
+            await log.save('no empty == true')
+
+        } catch (error) {
+            assert(error.includes("It's not possible to save a non-finished log"))
+        }
+    })
+
+    it("Save log with no start", async () => {
+        try {
+            const log = new Log
+
+            log.start()
+            log.add("Word ETC was added correctly")
+            log.finish()
+            await log.save('no empty == true')
+
+        } catch (error) {
+            assert(error.includes("It's not possible to save a non-intialized log"))
+        }
+    })
+
+    it("Save log with no directory", async () => {
+        try {
+            const log = new Log
+
+            log.start()
+            log.add("Word ETC was added correctly")
+            log.finish()
+            await log.save()
+
+        } catch (error) {
+            assert(error.includes("It's not possible to save a log without any directory"))
+        }
+    })
+
+    it("Finish log", async () => {
+        const log = new Log
+
+        log.start()
+        log.add("Word ETC was added correctly")
+        log.finish()
+        const result = await log.save('C:/Users/igorc/Documents/Projects/AnkiPIPE/files/log.txt')
+
+        assert(result === 'File saved correctly')
+    })
 
 })
