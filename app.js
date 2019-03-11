@@ -42,8 +42,8 @@ async function main() {
                                 example: examp
                             })
                             Log.add(`sentence: ${sentenceList[counter]} searched correctly`)
-                        }else
-                        Log.add(`sentence: ${sentenceList[counter]} couldn't be found`)
+                        } else
+                            Log.add(`sentence: ${sentenceList[counter]} couldn't be found`)
                     })
                 })
             })
@@ -53,9 +53,7 @@ async function main() {
         ankiConnect.postAnkiCards(cards)
 
     } catch (error) {
-        if (error.message.includes('Error at file reading')) {
-            log.add(error)
-        }
+        log.add(error)
     } finally {
         Log.finish()
         Log.save(path.resolve('files/log.txt'))
