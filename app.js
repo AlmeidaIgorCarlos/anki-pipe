@@ -1,3 +1,4 @@
+const path = require('path')
 const dataFile = require('./services/dataFile')
 const webScraper = require('./services/webScraper')
 const ankiConnect = require('./services/ankiConnect')
@@ -17,11 +18,10 @@ async function main() {
         let sentenceList = []
 
         dataFile.getSentences(fileText, (sentences) => {
-            sentenceList = sentences            
+            sentenceList = sentences
             dataFile.getWords(sentences, (words) => {
                 words.forEach((word) => {
                     searchPromises.push(WebScraper.searchWord(word[0]))
-                    Log.add(`Word ${word} searched correctly`)
                 })
             })
         })
@@ -34,12 +34,16 @@ async function main() {
             WebScraper.getPronunciation(info, (pronun) => {
                 WebScraper.getDefinition(info, (definit) => {
                     WebScraper.getExample(info, (examp) => {
-                        cards.push({
-                            sentence: sentenceList[counter],
-                            pronunciation: pronun,
-                            definition: definit,
-                            example: examp
-                        })
+                        if (definit !== 'No definition found') {
+                            cards.push({
+                                sentence: sentenceList[counter],
+                                pronunciation: pronun,
+                                definition: definit,
+                                example: examp
+                            })
+                            Log.add(`sentence: ${sentenceList[counter]} searched correctly`)
+                        }else
+                        Log.add(`sentence: ${sentenceList[counter]} couldn't be found`)
                     })
                 })
             })
@@ -48,14 +52,15 @@ async function main() {
 
         ankiConnect.postAnkiCards(cards)
 
-        console.log
-
     } catch (error) {
-        if (error.includes('Error at file reading')) {
+        if (error.message.includes('Error at file reading')) {
             log.add(error)
-            log.finish()
-            log.save()
         }
+    } finally {
+        Log.finish()
+        Log.save(path.resolve('files/log.txt'))
+
+        Log.getLog().forEach(log => console.log(log))
     }
 }
 

@@ -6,7 +6,7 @@ module.exports = {
     getFileText: ()=>{
         return new Promise((resolve, reject)=>{
             fs.readFile(path.resolve('Files/list.txt'), {encoding:"UTF-8"}, (err, data)=>{
-                if(err) reject(`Error at file reading - ${err}`)
+                if(err) reject(new Error(`Error at file reading - ${err}`))
                 else resolve(data)
             })
         })

@@ -157,11 +157,11 @@ describe("Log's Test", () => {
 
             log.start()
             log.add("Word ETC was added correctly")
-            log.finish()
+            // log.finish()
             await log.save('no empty == true')
 
         } catch (error) {
-            assert(error.includes("It's not possible to save a non-finished log"))
+            assert(error.message.includes("It's not possible to save a non-finished log"))
         }
     })
 
@@ -169,13 +169,12 @@ describe("Log's Test", () => {
         try {
             const log = new Log
 
-            log.start()
+            // log.start()
             log.add("Word ETC was added correctly")
             log.finish()
             await log.save('no empty == true')
-
         } catch (error) {
-            assert(error.includes("It's not possible to save a non-intialized log"))
+            assert(error.message.includes("non-initialized"))
         }
     })
 
@@ -189,7 +188,7 @@ describe("Log's Test", () => {
             await log.save()
 
         } catch (error) {
-            assert(error.includes("It's not possible to save a log without any directory"))
+            assert(error.message.includes("It's not possible to save a log without any directory"))
         }
     })
 

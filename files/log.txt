@@ -1,3 +1,1 @@
-Beginning of the execution: [3:55:54 PM] 
-,Word ETC was added correctly 
-,Execution finish: [3:55:54 PM] 
+Beginning of the execution: [10:43:33] ,File loaded correctly ,sentence: I want to have !eggs! for luch searched correctly ,sentence: I would like to !fasdfg! today couldn't be found ,Execution finish: [10:43:36] 

@@ -44,7 +44,9 @@ module.exports = {
                     }
                 },
             },
-            requisition))
+            requisition), (err)=>{
+                if(err) reject(new Error('Error inputing data in Anki'))
+            })
     },
     getAnkiCards: () => new Promise((resolve, reject) => {
         request.post(Object.assign({},
@@ -57,7 +59,7 @@ module.exports = {
                     }
                 },
             }, requisition), (err, res, body) => {
-                if (err || res.statusCode != 200) reject("Anki's connection failed")
+                if (err || res.statusCode != 200) reject(new Error("Anki's connection failed"))
                 else resolve(JSON.stringify(body))
             })
     }),
