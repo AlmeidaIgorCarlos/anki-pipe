@@ -1,14 +1,13 @@
 const request = require('request')
 const cheerio = require('cheerio')
 
-module.exports = function webScraping(word){
+module.exports = function webScraping(){
     
     this.url = 'https://www.collinsdictionary.com/pt/dictionary/english'
-    this.word = word
 
-    this.searchWord = function(){
+    this.searchWord = function(word){
         return new Promise((resolve, reject) => {
-            if(!this.word) reject('No acceptable word informed')
+            if(word == false) reject('No acceptable word informed')
             request(`${this.url}/${word}`, (err, res, body)=>{
                 if(err || res.statusCode != 200) reject('Problem with the dictionary connection')
                 else{

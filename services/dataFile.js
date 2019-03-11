@@ -3,11 +3,11 @@ const fs = require('fs');
 const RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| )+?(?=(!))/;
 
 module.exports = {
-    getFileText: (callback)=>{
+    getFileText: ()=>{
         return new Promise((resolve, reject)=>{
-            fs.readFile(path.resolve('Arquivos/lista.txt'), {encoding:"UTF-8"}, (err, data)=>{
+            fs.readFile(path.resolve('Files/list.txt'), {encoding:"UTF-8"}, (err, data)=>{
                 if(err) reject(`Error at file reading - ${err}`)
-                else resolve(callback(data))
+                else resolve(data)
             })
         })
         
