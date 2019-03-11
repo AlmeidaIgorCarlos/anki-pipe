@@ -1,5 +1,4 @@
 node_modules/
-Arquivos/configuracao.json
-Arquivos/lista.txt
+files/
 /.vscode
 /.idea

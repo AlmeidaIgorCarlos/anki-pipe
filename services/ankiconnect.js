@@ -60,8 +60,7 @@ module.exports = {
                 },
             }, requisition), (err, res, body) => {
                 if (err || res.statusCode != 200) reject(new Error("Anki's connection failed"))
-                else resolve(JSON.stringify(body))
+                else resolve(body)
             })
-    }),
-    count: (data) => JSON.parse(data).result.length
+    })
 }
