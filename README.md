@@ -33,8 +33,8 @@ Antes de finalizar a execução, um log deverá ser salvo na máquina.
 
 **Requisitos Funcionais**
 1. Ao iniciar a execução, a aplicação deve consultar a lista de frases com palavras não entendidas;
-2. A aplicação pesquisará o significado de cada palavra entre !PALAVRA!, caso tenha mais de uma palavra, a linha será abortada, incluindo no log de execução que determinada frase tem mais de uma palavra não entendida e não pode ser processada;
-3. Caso a frase não tenha nenhuma palavra destacada, aplicar o mesmo tratamento de palavras não entendidas desejadas;
+2. A aplicação pesquisará o significado de cada palavra entre !PALAVRA!, caso tenha mais de uma palavra destacada somente a primeira será processada;
+3. Caso a frase não tenha nenhuma palavra destacada, não será adicionada e será descrito no log
 4. A aplicação deverá gerar um log de sua execução;
 
 **Requisitos Não-Funcionais**

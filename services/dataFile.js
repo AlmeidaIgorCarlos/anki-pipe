@@ -13,7 +13,7 @@ module.exports = {
 
     },
     getSentences: (fileText, callback) => {
-        const sentences = fileText.split('\n')
+        const sentences = fileText.split('\r\n')
         callback(sentences)
     },
     getWords: (sentences, callback) => {
