@@ -18,19 +18,24 @@ async function main() {
 
         const searchPromises = []
         let sentenceList = []
+        let counterSentenceLog = 0
 
         dataFile.getSentences(fileText, (sentences) => {
             sentenceList = sentences
             dataFile.getWords(sentences, (words) => {
                 words.forEach((word) => {
-                    searchPromises.push(WebScraper.searchWord(word[0]))
+                    if (word !== 'Was found more than one word')
+                        searchPromises.push(WebScraper.searchWord(word))
+                    else
+                        Log.add(`Occured an error at the sentence: '${counterSentenceLog}' - Error: ${word}`)
+                    counterSentenceLog++
                 })
             })
         })
 
         const wordsInfo = await Promise.all(searchPromises)
         const cards = []
-        let counter = 0
+        let counterSentenceAnki = 0
 
         wordsInfo.forEach((info) => {
             WebScraper.getPronunciation(info, (pronun) => {
@@ -38,18 +43,18 @@ async function main() {
                     WebScraper.getExample(info, (examp) => {
                         if (definit !== 'No definition found') {
                             cards.push({
-                                sentence: sentenceList[counter],
+                                sentence: sentenceList[counterSentenceAnki],
                                 pronunciation: pronun,
                                 definition: definit,
                                 example: examp
                             })
-                            Log.add(`sentence: ${sentenceList[counter]} searched correctly`)
+                            Log.add(`sentence: ${sentenceList[counterSentenceAnki]} searched correctly`)
                         } else
-                            Log.add(`sentence: ${sentenceList[counter]} couldn't be found`)
+                            Log.add(`sentence: ${sentenceList[counterSentenceAnki]} couldn't be found`)
                     })
                 })
             })
-            counter++
+            counterSentenceAnki++
         })
 
         await ankiConnect.postAnkiCards(cards)

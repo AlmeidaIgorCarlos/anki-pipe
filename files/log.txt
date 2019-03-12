@@ -1,6 +1,8 @@
-Beginning of the execution: [09:25:16] ,File loaded correctly 
-,sentence: Today I want to !lay! on my bed all day long searched correctly 
-,Quantity of cards: 497 
+Beginning of the execution: [11:53:54] ,File loaded correctly 
+,sentence: Today I want to !lay! on my bed all day long searched correctly 
+,sentence: Now I !will! do !something! searched correctly 
+,sentence: I do not want to go to school couldn't be found 
+,Quantity of cards: 498 
 ,Days missing for the goal: 294 
 ,Cards per day required: 11.91 
-,Execution finish: [09:25:19] 
+,Execution finish: [11:54:00] 
