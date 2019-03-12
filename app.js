@@ -52,7 +52,7 @@ async function main() {
             counter++
         })
 
-        // ankiConnect.postAnkiCards(cards)
+        ankiConnect.postAnkiCards(cards)
 
         reportData = await report.generateReport()
 

@@ -20,19 +20,21 @@ module.exports = function webScraping(){
 
     this.getPronunciation = function($, callback){
         const wordPronunciation = $('.pron').text() || 'No pronunciation found'
-        //if(wordPronunciation == false) throw new Error('No pronunciation found')
+        
         callback(wordPronunciation)
     }
 
     this.getDefinition = function($, callback){
         const wordDefinition = $('.hom>.sense>.def').text() || 'No definition found'
-        // if(wordDefinition == false) throw new Error('No definition found')
-        callback(wordDefinition)
+        const result = wordDefinition.split('.').reduce((total, item)=>total+`${item} <br>`) 
+                
+        callback(result)
     }
 
     this.getExample = function($, callback){
         const wordExample = $('.hom>.sense>.type-example>.quote').text() || 'No example found'
-        // if(wordExample == false) throw new Error('No example found')
-        callback(wordExample)
+        const result = wordExample.split('.').reduce((total, item)=>total+`${item} <br>`) 
+                
+        callback(result)
     }
 }

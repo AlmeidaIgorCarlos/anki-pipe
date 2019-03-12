@@ -1,16 +1,6 @@
-Beginning of the execution: [16:33:09] 
-,File loaded correctly 
-
-,sentence: I want to have !eggs! for luch
- searched correctly 
-
-,sentence: I would like to !fasdfg! today couldn't be found 
-
-,Quantity of cards: 499 
-
-,Days missing for the goal: 295 
-
-,Cards per day required: 11.87 
-
-
-,Execution finish: [16:33:11] 
+Beginning of the execution: [08:49:08] ,File loaded correctly 
+,sentence: Today I want to !lay! on my bed all day long searched correctly 
+,Quantity of cards: 496 
+,Days missing for the goal: 294 
+,Cards per day required: 11.92 
+,Execution finish: [08:49:10] 
