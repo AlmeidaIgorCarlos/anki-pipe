@@ -1,6 +1,6 @@
-Beginning of the execution: [08:49:08] ,File loaded correctly 
+Beginning of the execution: [09:25:16] ,File loaded correctly 
 ,sentence: Today I want to !lay! on my bed all day long searched correctly 
-,Quantity of cards: 496 
+,Quantity of cards: 497 
 ,Days missing for the goal: 294 
-,Cards per day required: 11.92 
-,Execution finish: [08:49:10] 
+,Cards per day required: 11.91 
+,Execution finish: [09:25:19] 

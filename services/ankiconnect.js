@@ -33,7 +33,7 @@ function setCards(cards) {
 }
 
 module.exports = {
-    postAnkiCards: (cards) => {
+    postAnkiCards: (cards) => new Promise((resolve, reject) => {
         request.post(Object.assign({},
             {
                 body: {
@@ -44,10 +44,11 @@ module.exports = {
                     }
                 },
             },
-            requisition), (err)=>{
-                if(err) reject(new Error('Error inputing data in Anki'))
+            requisition), (err) => {
+                if (err) reject(new Error('Error inputing data in Anki'))
+                else resolve(true)
             })
-    },
+    }),
     getAnkiCards: () => new Promise((resolve, reject) => {
         request.post(Object.assign({},
             {
