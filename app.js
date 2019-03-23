@@ -48,16 +48,16 @@ async function main() {
                                 definition: definit,
                                 example: examp
                             })
-                            Log.add(`sentence: ${sentenceList[counterSentenceAnki]} searched correctly`)
+                            Log.add(`(+) sentence: [${sentenceList[counterSentenceAnki]}] - searched correctly`)
                         } else
-                            Log.add(`sentence: ${sentenceList[counterSentenceAnki]} couldn't be found`)
+                            Log.add(`(-) sentence: [${sentenceList[counterSentenceAnki]}] - couldn't be found`)
                     })
                 })
             })
             counterSentenceAnki++
         })
 
-        await ankiConnect.postAnkiCards(cards)
+        // await ankiConnect.postAnkiCards(cards)
 
         reportData = await report.generateReport()
 
