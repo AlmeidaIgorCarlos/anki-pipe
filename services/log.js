@@ -8,16 +8,16 @@ module.exports = function () {
     }
 
     this.start = () => {
-        _logList.push(`Beginning of the execution: [${(new Date).toLocaleTimeString()}]`)
+        _logList.push(`Beginning of the execution: [${(new Date).toLocaleTimeString()}]\n\r`)
     }
 
     this.add = (logRow) => {
         if (_logList.length === 0) throw new Error("It's not possible to add a log in a non-initialized log")
-        else _logList.push(`${logRow}`)
+        else _logList.push(`${logRow}\n\r`)
     }
 
     this.finish = () => {
-        if (_logList.length > 0) _logList.push(`Execution finish: [${(new Date).toLocaleTimeString()}]`)
+        if (_logList.length > 0) _logList.push(`Execution finish: [${(new Date).toLocaleTimeString()}]\n\r`)
         else throw new Error("It's not possible to finish a log that wasn't even initialized")
     }
 

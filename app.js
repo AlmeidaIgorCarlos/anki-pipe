@@ -9,6 +9,7 @@ const Log = new log()
 const WebScraper = new webScraper()
 
 let reportData
+
 async function main() {
     try {
         Log.start()
@@ -37,6 +38,8 @@ async function main() {
         const cards = []
         let counterSentenceAnki = 0
 
+        Log.add('---------------------------------------------')
+
         wordsInfo.forEach((info) => {
             WebScraper.getPronunciation(info, (pronun) => {
                 WebScraper.getDefinition(info, (definit) => {
@@ -57,16 +60,20 @@ async function main() {
             counterSentenceAnki++
         })
 
-        // await ankiConnect.postAnkiCards(cards)
+        await ankiConnect.postAnkiCards(cards)
 
         reportData = await report.generateReport()
 
     } catch (error) {
-        log.add(error)
+        Log.add(error)
     } finally {
+        Log.add('---------------------------------------------')
+
         Log.add(`Quantity of cards: ${reportData.ankiSum}`)
         Log.add(`Days missing for the goal: ${reportData.daysMissing}`)
         Log.add(`Cards per day required: ${reportData.media}`)
+
+        Log.add('---------------------------------------------')
 
         Log.finish()
         Log.save(path.resolve('files/log.txt'))
