@@ -1,4 +1,4 @@
-# AnkiPIPE
+# anki-pipe
 
 Ultilizo o anki, software de repetição espaçada para estudar inglês. Possuo um deck somente para treinar o vocabulário da língua inglesa, nos cards costumo deixar uma frase com somente uma palavra que ainda não saiba o significado destacada na parte da frente e seu significado, exemplos de utilização e transcrição fonética na parte de trás.
 
