@@ -1,14 +1,17 @@
-Beginning of the execution: [8:11:25 PM]
+Beginning of the execution: [3:40:54 PM]
 ,File loaded correctly
 ,---------------------------------------------
-,(+) sentence: [Today I want to !lay! on my bed all day long] - searched correctly
-,(+) sentence: [Now I !will! do !something!] - searched correctly
-,(-) sentence: [I do not want to go to school] - couldn't be found
-,(+) sentence: [Why don't you !get up!] - searched correctly
+,(+) sentence: [The letting agent says with what could almost pass for genuine enthusiasm. Close to the !amenities!. And you've that private bit of roof.] - searched correctly
+,(+) sentence: [He's trying to keep the frustation out of his voice, but the fact that he needs to !riles! me even more.] - searched correctly
+,(+) sentence: [He lowers his voice. look mate, we were !burgled!.] - searched correctly
+,(+) sentence: [Ignoring the peeling wallpaper, the faint smell of someone else's cooking seeping up from the flat below, the !poky! bedroom and the mould spattered across the unvetilated bathroom.] - searched correctly
+,(+) sentence: [Eventually she says, 'If nothing we saw today took your fancy, we might have to think about upping your !budget!'] - searched correctly
+,(+) sentence: [It's not a straightforward !landlord!-tenant agreement] - searched correctly
+,(+) sentence: [The street outside had given no clue. Two rows of big, !nondescript! houses.] - searched correctly
+,(+) sentence: [... I say nervously, hanging back. The agent !smirks!] - searched correctly
+,(+) sentence: [London background noise of traffic and !scaffolding! riggers and car alarms has gone.] - searched correctly
+,(+) sentence: ['It's beatiful', I say. inside, the house is a !sleek! and perfect as an art gallery. Just beautiful.] - searched correctly
 ,---------------------------------------------
-,Quantity of cards: 557
-,Days missing for the goal: 283
-,Cards per day required: 12.17
 ,---------------------------------------------
-,Execution finish: [8:11:29 PM]
+,Execution finish: [3:40:57 PM]
 
