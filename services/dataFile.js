@@ -5,7 +5,7 @@ const RegExp = /(?<=(!))(\w|\d|\n|[().,\-:;@#$%^&*\[\]"'+–/\/®°⁰!?{}|`~]| 
 module.exports = {
     getFileText: () => {
         return new Promise((resolve, reject) => {
-            fs.readFile(path.resolve('Files/list.txt'), { encoding: "UTF-8" }, (err, data) => {
+            fs.readFile(path.resolve('files/list.txt'), { encoding: "UTF-8" }, (err, data) => {
                 if (err) reject(new Error(`Error at file reading - ${err}`))
                 else resolve(data)
             })
@@ -13,7 +13,7 @@ module.exports = {
 
     },
     getSentences: (fileText, callback) => {
-        const sentences = fileText.split('\r\n')
+        const sentences = fileText.split('\n')
         callback(sentences)
     },
     getWords: (sentences, callback) => {
