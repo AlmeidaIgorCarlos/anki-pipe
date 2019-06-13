@@ -12,17 +12,20 @@ module.exports = {
         })
 
     },
-    getSentences: (fileText, callback) => {
-        const sentences = fileText.split('\n')
-        callback(sentences)
-    },
-    getWords: (sentences, callback) => {
-        const words = []
-        sentences.forEach(element => {
+
+    getSentences: (fileText) => fileText.split('\n'),
+    
+    getWords: (sentences) => new Promise((resolve, reject)=>{
+        try {
+            const words = []
+            sentences.forEach(element => {
             const word = RegExp.exec(element)
-            if (word == null || word == false) words.push('No word was found')
-            else words.push(word[0])
-        });
-        callback(words)
-    }
+                if(word) words.push(word[0])
+                else words.push('No word was found')
+            })
+            resolve(words)
+        } catch (error) {
+            reject(error)
+        }
+    })
 }

@@ -8,59 +8,42 @@ const report = require('./services/report')
 const Log = new log()
 const WebScraper = new webScraper()
 
-let reportData
-
-async function main() {
+(async function main() {
+    let reportData
+    
     try {
         Log.start()
 
         const fileText = await dataFile.getFileText()
         Log.add('File loaded correctly')
 
-        const searchPromises = []
-        let sentenceList = []
-        let counterSentenceLog = 0
+        const sentenceList = dataFile.getSentences(fileText)
+        const wordsList = await dataFile.getWords(sentenceList)
+        const searchList = wordsList.map((word) => WebScraper.searchWord(word))
+        const wordsInfo = await Promise.all(searchList)
 
-        dataFile.getSentences(fileText, (sentences) => {
-            sentenceList = sentences
-            dataFile.getWords(sentences, (words) => {
-                words.forEach((word) => {
-                    if (word !== 'Was found more than one word')
-                        searchPromises.push(WebScraper.searchWord(word))
-                    else
-                        Log.add(`Occured an error at the sentence: '${counterSentenceLog}' - Error: ${word}`)
-                    counterSentenceLog++
-                })
-            })
-        })
-
-        const wordsInfo = await Promise.all(searchPromises)
-        const cards = []
-        let counterSentenceAnki = 0
+        const ankiCards = []
 
         Log.add('---------------------------------------------')
 
-        wordsInfo.forEach((info) => {
-            WebScraper.getPronunciation(info, (pronun) => {
-                WebScraper.getDefinition(info, (definit) => {
-                    WebScraper.getExample(info, (examp) => {
-                        if (definit !== 'No definition found') {
-                            cards.push({
-                                sentence: sentenceList[counterSentenceAnki],
-                                pronunciation: pronun,
-                                definition: definit,
-                                example: examp
-                            })
-                            Log.add(`(+) sentence: [${sentenceList[counterSentenceAnki]}] - searched correctly`)
-                        } else
-                            Log.add(`(-) sentence: [${sentenceList[counterSentenceAnki]}] - couldn't be found`)
-                    })
-                })
-            })
-            counterSentenceAnki++
-        })
+        for(let i = 0; i<wordsInfo.length; i++){
+            const pronunciation = WebScraper.getPronunciation(wordsInfo[i])
+            const definition = WebScraper.getDefinition(wordsInfo[i])
+            const example = WebScraper.getExample(wordsInfo[i])
 
-        await ankiConnect.postAnkiCards(cards)
+            if (definition !== 'No definition found') {
+                ankiCards.push({
+                    sentence: sentenceList[i],
+                    pronunciation: pronunciation,
+                    definition: definition,
+                    example: example
+                })
+                Log.add(`(+) sentence: [${sentenceList[i]}] - searched correctly`)
+            } else
+                Log.add(`(-) sentence: [${sentenceList[i]}] - couldn't be found`)
+        }
+
+        await ankiConnect.postAnkiCards(ankiCards)
 
         reportData = await report.generateReport()
 
@@ -80,6 +63,4 @@ async function main() {
 
         Log.getLog().forEach(log => console.log(log))
     }
-}
-
-main()
+})()

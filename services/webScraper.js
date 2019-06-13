@@ -18,23 +18,17 @@ module.exports = function webScraping(){
         })
     }
 
-    this.getPronunciation = function($, callback){
-        const wordPronunciation = $('.pron').text() || 'No pronunciation found'
-        
-        callback(wordPronunciation)
-    }
+    this.getPronunciation = ($) => $('.pron').text() || 'No pronunciation found'  
 
-    this.getDefinition = function($, callback){
+    this.getDefinition = ($) => {
         const wordDefinition = $('.hom>.sense>.def').text() || 'No definition found'
-        const result = wordDefinition.split('.').reduce((total, item)=>total+`${item} <br>`) 
-                
-        callback(result)
+        const result = wordDefinition.split('.').reduce((total, item)=>total+`${item} <br>`)
+        return result
     }
 
-    this.getExample = function($, callback){
+    this.getExample = ($) => {
         const wordExample = $('.hom>.sense>.type-example>.quote').text() || 'No example found'
         const result = wordExample.split('.').reduce((total, item)=>total+`${item} <br>`) 
-                
-        callback(result)
+        return result
     }
 }
