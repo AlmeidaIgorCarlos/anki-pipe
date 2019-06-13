@@ -10,12 +10,14 @@ const requisition = {
     json: true
 }
 
+const deckName = 'English deck'
+
 function setCards(cards) {
     const tempCards = [];
 
     cards.forEach((card) => {
         tempCards.push({
-            deckName: 'English deck',
+            deckName: deckName,
             modelName: "Basic",
             fields: {
                 Front: card.sentence,
@@ -56,7 +58,7 @@ module.exports = {
                     "action": "findCards",
                     "version": 6,
                     "params": {
-                        "query": 'deck:current'
+                        "query": `deck:${deckName}`
                     }
                 },
             }, requisition), (err, res, body) => {
