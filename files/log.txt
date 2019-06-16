@@ -1,11 +1,0 @@
-Beginning of the execution: [1:05:49 PM]
-,File loaded correctly
-,---------------------------------------------
-,(+) sentence: [I pick up my !biro!, then put it down again.] - searched correctly
-,---------------------------------------------
-,Quantity of cards: 6
-,Days missing for the goal: 201
-,Cards per day required: 19.87
-,---------------------------------------------
-,Execution finish: [1:05:50 PM]
-

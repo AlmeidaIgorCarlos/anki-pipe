@@ -1,3 +1,5 @@
 node_modules/
 /.vscode
 /.idea
+files/list.txt
+files/log.txt

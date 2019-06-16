@@ -8,7 +8,7 @@ const report = require('./services/report')
 const Log = new log()
 const WebScraper = new webScraper()
 
-(async function main() {
+async function main() {
     let reportData
     
     try {
@@ -63,4 +63,6 @@ const WebScraper = new webScraper()
 
         Log.getLog().forEach(log => console.log(log))
     }
-})()
+}
+
+main()
