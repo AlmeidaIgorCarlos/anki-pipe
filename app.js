@@ -8,7 +8,7 @@ const report = require('./services/report')
 const Log = new log()
 const WebScraper = new webScraper()
 
-(async function main() {
+async function main() {
     let reportData
     
     try {
@@ -45,11 +45,10 @@ const WebScraper = new webScraper()
 
         await ankiConnect.postAnkiCards(ankiCards)
 
-        reportData = await report.generateReport()
-
     } catch (error) {
-        Log.add(error)
+        Log.add(error.message)
     } finally {
+        reportData = await report.generateReport()
         Log.add('---------------------------------------------')
 
         Log.add(`Quantity of cards: ${reportData.ankiSum}`)
@@ -63,4 +62,6 @@ const WebScraper = new webScraper()
 
         Log.getLog().forEach(log => console.log(log))
     }
-})()
+}
+
+main()

@@ -10,7 +10,7 @@ const requisition = {
     json: true
 }
 
-const deckName = 'English deck'
+const deckName = 'english'
 
 function setCards(cards) {
     const tempCards = [];
