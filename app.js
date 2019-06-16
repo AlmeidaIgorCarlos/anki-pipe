@@ -45,11 +45,10 @@ async function main() {
 
         await ankiConnect.postAnkiCards(ankiCards)
 
-        reportData = await report.generateReport()
-
     } catch (error) {
-        Log.add(error)
+        Log.add(error.message)
     } finally {
+        reportData = await report.generateReport()
         Log.add('---------------------------------------------')
 
         Log.add(`Quantity of cards: ${reportData.ankiSum}`)
