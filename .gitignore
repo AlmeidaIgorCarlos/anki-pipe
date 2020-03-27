@@ -3,3 +3,4 @@ node_modules/
 /.idea
 files/list.txt
 files/log.txt
+package-lock.json
